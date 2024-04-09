@@ -38,6 +38,21 @@ app.get("/main", (req, res)=> {
     res.render("index")
 })
 
+app.get("/make-appointment", (req, res)=> {
+    res.render("createAppointment")
+})
+
+app.get("/update-appointment", (req, res)=> {
+    res.render("index")
+})
+
+app.get("/check-appointment", (req, res)=> {
+    res.render("index")
+})
+
+app.get("/delete-appointment", (req, res)=> {
+    res.render("index")
+})
 // connect to database
 // connectToMongo(() => {
 //     console.log("Connected to MySQL");
