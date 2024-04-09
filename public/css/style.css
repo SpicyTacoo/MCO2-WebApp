@@ -79,12 +79,20 @@ body {
         position: absolute;
         right: 20px;
         transition: 0.5;
-        opacity: 1;
+        display: inline;
     }
 }
 
 #create-appointment i, #check-appointment i, #update-appointment i, #cancel-appointment i {
-    opacity: 0;
+    display: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    opacity: 0.8;
 }
 
 

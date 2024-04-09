@@ -43,15 +43,15 @@ app.get("/make-appointment", (req, res)=> {
 })
 
 app.get("/update-appointment", (req, res)=> {
-    res.render("index")
+    res.render("checkAppointment")
 })
 
 app.get("/check-appointment", (req, res)=> {
-    res.render("index")
+    res.render("updateAppointment")
 })
 
-app.get("/delete-appointment", (req, res)=> {
-    res.render("index")
+app.get("/cancel-appointment", (req, res)=> {
+    res.render("cancelAppointment")
 })
 // connect to database
 // connectToMongo(() => {
