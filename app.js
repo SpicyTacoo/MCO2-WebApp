@@ -5,10 +5,7 @@ import path from "path";
 import {fileURLToPath} from 'url';
 import cors from "cors";
 import bodyParser from "body-parser";
-import {} from "./db/conn.js";
-// import { ObjectId } from 'mongodb';
-// import { connectToMongo, getDb } from "./db/conn.js";
-// import mongoose from "mongoose";
+import { pool } from "./db/conn.js";
 
 // to allow __dirname to work in ES6
 const __filename = fileURLToPath(import.meta.url);
@@ -53,13 +50,16 @@ app.get("/check-appointment", (req, res)=> {
 app.get("/cancel-appointment", (req, res)=> {
     res.render("cancelAppointment")
 })
-// connect to database
-// connectToMongo(() => {
-//     console.log("Connected to MySQL");
-// });
 
 // connect to localhost
 app.listen(3000, ()=> {
     console.log("Connected Successfully! Server is running on PORT: 3000");
-    // mongoose.connect(process.env.MONGODB_URI, { dbName: process.env.DB_NAME });
 });
+
+async function getAppointments() {
+    const [rows] = await pool.query("SELECT * FROM appointments")
+    return rows
+}
+
+const appointment = await getAppointments()
+console.log(appointment)
