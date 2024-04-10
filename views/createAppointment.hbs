@@ -4,9 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/createAppointment.js" defer></script>
     <title>Make an Appointment</title>
 </head>
 <body>
     {{> subHeader}}
+
+    <div class="container" id="create-container">
+        <div class="inner-container" id="create-inner-container">
+            <div class="title">Make an Appointment</div>
+
+            <form action="/make-appointment" method="post" id="appointment-form" autocomplete="off">
+                <div class="user-details">
+                    <div class="input">
+                        <span class="headerreg">Appointment Type:</span>
+
+                        <select name="type" id="appointment-type" required>
+                        <option value="consultation">Consultation</option>
+                        <option value="inpatient">Inpatient</option>
+                        </select>
+                    </div>
+
+                    <div class="input">
+                        <span class="headerreg">Virtual?</span>
+                        <input type="checkbox" id="is-virtual" value="1">
+                    </div>
+                </div>
+
+                <div class="submit-button">
+                    <input type="submit" id="submit-button" value="Submit">
+                </div>
+            
+            </form>
+        </div>
+    </div>
 </body>
 </html>
