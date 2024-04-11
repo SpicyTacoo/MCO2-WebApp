@@ -80,6 +80,17 @@ app.get("/update-appointment", (req, res)=> {
 app.get("/check-appointment", (req, res)=> {
     res.render("checkAppointment")
 })
+app.get("/check", async (req, res)=>{
+    const searchTerm = req.query.search;
+
+    try{
+        const [rows] = await pool.query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`${searchTerm}`]);
+        res.json(rows);
+    }catch(error){
+        console.error('Error searching appointments:', error);
+        res.status(500).send('Error searching appointments');
+    }
+});
 
 app.get("/cancel-appointment", (req, res)=> {
     res.render("cancelAppointment")
@@ -88,14 +99,26 @@ app.get("/search", async (req, res)=>{
     const searchTerm = req.query.search;
 
     try{
-        const [rows] = await pool.query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`%${searchTerm}%`]);
+        const [rows] = await pool.query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`${searchTerm}`]);
         res.json(rows);
     }catch(error){
         console.error('Error searching appointments:', error);
         res.status(500).send('Error searching appointments');
     }
 });
+app.post("/delete", async (req, res)=>{
+    var apptID = req.body.appointmentId;
+    console.log("Delete Appointment ID: ", apptID);
+    try {
+        // Perform deletion logic here (e.g., execute SQL DELETE statement)
+        await pool.query("DELETE FROM appointments WHERE appt_id = ?", [apptID]);
 
+        res.sendStatus(200);
+    } catch (error) {
+        console.error("Error deleting appointment: ", error);
+        res.status(500).send("Error deleting appointment");
+    }
+});
 // connect to localhost
 app.listen(3000, ()=> {
     console.log("Connected Successfully! Server is running on PORT: 3000");
