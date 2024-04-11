@@ -65,21 +65,90 @@ app.post("/make-appointment", async (req, res)=> {
 
     initialId += 1
 
-    const result = await pool.query(`
-                    INSERT INTO appointments (appt_id, patient_id, clinic_id, doctor_id, status, time_queued, queue_date, start_time, end_time, type, isVirtual)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    `, [applicationId, patientId, clinicId, doctorId, status, timeQueued, queueDate, start_time, end_time, type, isVirtual])
+    try {
+        const result = await pool.query(`
+        INSERT INTO appointments (appt_id, patient_id, clinic_id, doctor_id, status, time_queued, queue_date, start_time, end_time, type, isVirtual)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `, [applicationId, patientId, clinicId, doctorId, status, timeQueued, queueDate, start_time, end_time, type, isVirtual])
 
-    console.log(result)
+        console.log(result)
+        res.status(200).send('Create Appointment Success');
+    } catch(e) {
+        console.error('Error Creating Appointment:', e);
+        res.status(500).send('Error Creating Appointment');
+    }
 })
 
 app.get("/update-appointment", (req, res)=> {
     res.render("updateAppointment")
 })
 
+app.patch("/update-appointment/:id", async (req, res)=> {
+    const id = req.params.id
+    const appointmentID = parseInt(id, 16).toString(16).padStart(32, '0')
+
+    const clinicId = req.body.clinicId
+    const doctorId = req.body.doctorId
+    const status = req.body.status
+    const start_time = req.body.startTime
+    const end_time = req.body.endTime
+    const type = req.body.appointmentType
+    const isVirtual = req.body.virtual
+
+    console.log(clinicId)
+    console.log(doctorId)
+    console.log(status)
+    console.log(start_time)
+    console.log(end_time)
+    console.log(type)
+    console.log(isVirtual)
+
+    try {
+        const result = await pool.query(`UPDATE appointments SET clinic_id = ?, doctor_id = ?, status = ?, start_time = ?, end_time = ?, type = ?, isVirtual = ? WHERE appt_id LIKE ?
+                                        `, [clinicId, doctorId, status, start_time, end_time, type, isVirtual, appointmentID])
+        
+        console.log(result)
+        res.status(200).send('Update Appointment Success');
+    } catch(e) {
+        console.error('Error Updating Appointment:', e);
+        res.status(500).send('Error Updating Appointment');
+    }
+})
+
+app.get("/update-appointment/:id", async (req, res)=> {
+    const id = req.params.id
+    const appointmentID = parseInt(id, 16).toString(16).padStart(32, '0')
+    console.log(appointmentID)
+
+    try {
+        const [appointmentData] = await pool.query(`SELECT * FROM appointments WHERE appt_id LIKE ?`, [appointmentID])
+
+        console.log(appointmentData[0].doctor_id)
+        
+
+        const dataToRender = {
+            appt_id: appointmentData[0].appt_id,
+            doctor_id: appointmentData[0].doctor_id,
+            clinic_id: appointmentData[0].clinic_id,
+            status: appointmentData[0].status,
+            start_time: appointmentData[0].start_time,
+            end_time: appointmentData[0].end_time,
+            type: appointmentData[0].type,
+            isVirtual: appointmentData[0].isVirtual
+        }
+
+        res.render("updateAppointment", dataToRender)
+    } catch(e) {
+        console.error('Error searching appointments:', e);
+        res.status(500).send('Error searching appointments');
+    }
+})
+
 app.get("/check-appointment", (req, res)=> {
     res.render("checkAppointment")
 })
+
+
 app.get("/check", async (req, res)=>{
     const searchTerm = req.query.search;
 

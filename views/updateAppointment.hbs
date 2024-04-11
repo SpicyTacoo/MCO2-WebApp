@@ -4,9 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/search.css">
+    <script src="/js/updateAppointment.js" defer></script>
     <title>Update an Appointment</title>
 </head>
 <body>
-    
+    {{> subHeader}}
+
+    <div class="container" id="update-container">
+
+        <div class="SearchDiv">
+            <form action="/check" method="GET" id="searchForm">
+                <span class="headerreg">Search by Appointment ID:</span>
+                <input type="text" name="search" id ="searchInput" value="{{appt_id}}" placeholder="Search Appointment ID...">
+                <button type="submit" id="searchBtn">Search</button>
+            </form>
+        </div>
+
+        <div class="inner-container" id="update-inner-container">
+            <div class="title">Update Appointment</div>
+
+            <form action="/update-appointment/{{appt_id}}" method="post" id="appointment-form" autocomplete="off">
+                <div class="user-details">
+                    <div class="input">
+                        <span class="headerreg">Doctor ID:</span>
+                        <input type="text" id="doctor-id" value="{{doctor_id}}" required>
+                    </div>
+
+                    <div class="input">
+                        <span class="headerreg">Clinic ID:</span>
+                        <input type="text" id="clinic-id" value="{{clinic_id}}" required>
+                    </div>
+
+                    <div class="input">
+                        <span class="headerreg">Status:</span>
+
+                        <select name="type" id="status" required>
+                            <option value="Queued">Queued</option>
+                            <option value="Serving">Serving</option>
+                            <option value="Complete">Complete</option>
+                            <option value="Skip">Skip</option>
+                            <option value="Cancel">Cancel</option>
+                        </select>
+                    </div>
+
+                    <div class="input">
+                        <span class="headerreg">Start Time:</span>
+                        <input type="datetime-local" id="start-time">
+                    </div>
+
+                    <div class="input">
+                        <span class="headerreg">End Time:</span>
+                        <input type="datetime-local" id="end-time">
+                    </div>
+
+                    <div class="input">
+                        <span class="headerreg">Appointment Type:</span>
+                        
+                        <select name="type" id="appointment-type" required>
+                            <option value="Consultation">Consultation</option>
+                            <option value="Inpatient">Inpatient</option>
+                        </select>
+                    </div>
+
+                    <div class="input">
+                        <span class="headerreg">Virtual?</span>
+                        <input type="checkbox" id="is-virtual" value="1">
+                    </div>
+                </div>
+
+                <div class="submit-button">
+                    <input type="submit" id="submit-button" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

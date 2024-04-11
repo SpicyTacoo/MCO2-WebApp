@@ -1,14 +1,14 @@
-const appointmentData = document.getElementById('appointment-form')
+const submitButton = document.getElementById('appointment-form')
 
 const appointmentType = document.getElementById('appointment-type').value;
-const virtual = document.getElementById('is-virtual').value;
+const virtual = document.getElementById('is-virtual');
 
-appointmentData.addEventListener('submit', (event) => {
+submitButton.addEventListener('submit', (event) => {
     event.preventDefault();
 
         const formData = {
             appointmentType: appointmentType,
-            virtual: virtual,
+            virtual: virtual.checked ? 1 : 0,
         };
 
         try {
