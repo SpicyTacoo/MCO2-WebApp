@@ -40,16 +40,27 @@ app.get("/make-appointment", (req, res)=> {
 })
 
 app.get("/update-appointment", (req, res)=> {
-    res.render("checkAppointment")
+    res.render("updateAppointment")
 })
 
 app.get("/check-appointment", (req, res)=> {
-    res.render("updateAppointment")
+    res.render("checkAppointment")
 })
 
 app.get("/cancel-appointment", (req, res)=> {
     res.render("cancelAppointment")
 })
+app.get("/search", async (req, res)=>{
+    const searchTerm = req.query.search;
+
+    try{
+        const [rows] = await pool.query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`%${searchTerm}%`]);
+        res.json(rows);
+    }catch(error){
+        console.error('Error searching appointments:', error);
+        res.status(500).send('Error searching appointments');
+    }
+});
 
 // connect to localhost
 app.listen(3000, ()=> {
@@ -62,4 +73,4 @@ async function getAppointments() {
 }
 
 const appointment = await getAppointments()
-console.log(appointment)
+// console.log(appointment)
