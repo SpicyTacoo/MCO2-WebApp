@@ -5,7 +5,7 @@ import path from "path";
 import {fileURLToPath} from 'url';
 import cors from "cors";
 import bodyParser from "body-parser";
-import { pool } from "./db/conn.js";
+import { pool, pool2, pool3 } from "./db/conn.js";
 import { start } from "repl";
 
 // to allow __dirname to work in ES6
