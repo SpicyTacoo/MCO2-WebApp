@@ -38,9 +38,15 @@ body {
 
 .container {
     display: flex;
+    flex-direction: column;
     width: 100%;
     border-radius: 15px;
     padding: 2%;
+}
+.dropdown{
+    width: 100%;
+    text-align: center;
+    font-weight: bolder;
 }
 
 .inner-container {
