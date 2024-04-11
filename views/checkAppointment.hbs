@@ -5,8 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
     <title>Check an Appointment</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/search.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
-    
+    {{> header}}
+    <div class="SearchDiv">
+        <form action="/search" method="GET" id="searchForm">
+            <label for="search">Search by Appointment ID   </label>
+            <input type="text" name="search" id ="searchInput" placeholder="Search Appointment ID...">
+            <button type="submit" onclick="showButton()" id="searchBtn">Search</button>
+        </form>
+    </div>
+    <div class="InfoDiv">
+        <div class="appDetails">
+        </div>
+    </div>
+
+    <script>
+        function showButton(){
+            $(".buttons").removeClass("hide");
+        }
+
+        $("#searchForm").submit(function(event){
+            event.preventDefault();
+            var searchTerm = $("#searchInput").val();
+            console.log("searchTerm", searchTerm);
+            $.ajax({
+                url:"/search",
+                type: "get",
+                data:{search: searchTerm},
+                success: function(data){
+                    var appDetails = $(".appDetails");
+                    appDetails.html(""); // Clear previous content
+                    console.log("data", data);
+
+                    data.forEach(function(appointment){
+                        appDetails.append("<p>Appointment ID: " + appointment.appt_id + "</p>");
+                        appDetails.append("<p>Status: " + appointment.status + "</p>");
+                        appDetails.append("<p>Time Queued: " + appointment.time_queued + "</p>");
+                        appDetails.append("<p>Queue Date: " + appointment.queue_date + "</p>");
+                        appDetails.append("<p>Start Time: " + appointment.start_time + "</p>");
+                        appDetails.append("<p>End Time: " + appointment.end_time + "</p>");
+                        // appDetails.append("<p>Doctor's Specialty: " + appointment.specialty + "</p>");
+                        // appDetails.append("<p>Where: " + appointment.location + "</p>");
+                        // appDetails.append("<p>Patient's Age: " + appointment.patient_age + "</p>");
+                    });
+                },
+                error: function(xhr, status, error){
+                    console.error("Error searching appointments: ", error);
+                }
+            });
+        });
+
+    $(".InfoDiv").onclick(function(){
+        $(".buttons").removeClass("hide");
+    });
+    </script>
 </body>
 </html>
