@@ -2,6 +2,8 @@ import mysql from "mysql2";
 import dotenv from "dotenv";
 dotenv.config()
 
+let poolStatus
+
 export const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
@@ -21,6 +23,31 @@ pool.on('connection', function(connection) {
         console.error(new Date(), 'MySQL close', e)
     })
 })
+
+new Promise( async (resolve, reject) => { 
+    await pool.getConnection((err, con) => {
+        try {
+            if(con) {
+                con.release();
+                resolve({"status":"success", "data":"MySQL connected.", "con":pool})
+                
+                console.log("Success")
+            }
+        }
+        catch (err) {
+            reject({"status":"failed", "error":`MySQL error. ${err}`})
+            console.log("Fail")
+        }
+        resolve({"status":"failed", "error":"Error connecting to MySQL."})
+    })
+}).then((result) => {
+    poolStatus = result.status
+})
+
+export {poolStatus}
+
+
+
 
 function signalHandler() {
     console.log("Closing MySQL Connection...")
