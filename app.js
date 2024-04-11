@@ -51,7 +51,7 @@ app.post("/make-appointment", async (req, res)=> {
 
     const [numOfAppointmentId] = await pool.query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
 
-    const applicationId = numOfAppointmentId.toString(16).padStart(32, '0')
+    const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
     const patientId = hexId
     const clinicId = hexId
     const doctorId = hexId
@@ -89,11 +89,3 @@ app.get("/cancel-appointment", (req, res)=> {
 app.listen(3000, ()=> {
     console.log("Connected Successfully! Server is running on PORT: 3000");
 });
-
-// async function getAppointments() {
-//     const [rows] = await pool.query("SELECT * FROM appointments")
-//     return rows
-// }
-
-// const appointment = await getAppointments()
-// console.log(appointment)
