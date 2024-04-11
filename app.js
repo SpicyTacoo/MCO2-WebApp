@@ -99,9 +99,6 @@ app.get("/search", async (req, res)=>{
 // connect to localhost
 app.listen(3000, ()=> {
     console.log("Connected Successfully! Server is running on PORT: 3000");
-<<<<<<< HEAD
-});
-=======
 });
 
 // async function getAppointments() {
@@ -111,4 +108,3 @@ app.listen(3000, ()=> {
 
 //const appointment = await getAppointments()
 // console.log(appointment)
->>>>>>> 6293bd4fde18fa2303a8aa9b409c2bdf4d10d150
