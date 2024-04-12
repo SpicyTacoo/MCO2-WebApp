@@ -14,7 +14,7 @@
     {{> header}}
 
     <div class="SearchDiv">
-        <form action="/search" method="GET" id="searchForm">
+        <form action="/{{port}}/search" method="GET" id="searchForm">
             <label for="search">Search by Appointment ID   </label>
             <input type="text" name="search" id ="searchInput" placeholder="Search Appointment ID...">
             <button type="submit" onclick="showButton()" id="searchBtn">Search</button>

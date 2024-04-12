@@ -2,7 +2,7 @@ import mysql from "mysql2";
 import dotenv from "dotenv";
 dotenv.config()
 
-let poolStatus
+let poolStatus, poolStatus2, poolStatus3
 
 export const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
@@ -125,7 +125,7 @@ const poolPromise3 = new Promise( async (resolve, reject) => {
     poolStatus3 = result.status;
 
 })
-
+export {poolStatus, poolStatus2, poolStatus3}
 function signalHandler() {
     console.log("Closing MySQL Connection...")
     pool.end(function (err) {

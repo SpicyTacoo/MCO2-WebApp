@@ -87,7 +87,13 @@ app.post("/:port/make-appointment", async (req, res)=> {
 })
 
 app.get("/:port/update-appointment", (req, res)=> {
-    res.render("updateAppointment")
+    console.log(pool.status)
+
+    const dataToRender = {
+        port: req.params.port
+    }
+    
+    res.render("updateAppointment", dataToRender)
 })
 
 app.patch("/:port/update-appointment/:id", async (req, res)=> {
@@ -153,7 +159,12 @@ app.get("/:port/update-appointment/:id", async (req, res)=> {
 })
 
 app.get("/:port/check-appointment", (req, res)=> {
-    res.render("checkAppointment")
+    console.log(pool.status)
+
+    const dataToRender = {
+        port: req.params.port
+    }
+    res.render("checkAppointment", dataToRender)
 })
 
 
@@ -170,7 +181,12 @@ app.get("/:port/check", async (req, res)=>{
 });
 
 app.get("/:port/cancel-appointment", (req, res)=> {
-    res.render("cancelAppointment")
+    console.log(pool.status)
+
+    const dataToRender = {
+        port: req.params.port
+    }
+    res.render("cancelAppointment", dataToRender)
 })
 app.get("/:port/search", async (req, res)=>{
     const searchTerm = req.query.search;
