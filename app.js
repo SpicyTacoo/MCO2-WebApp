@@ -52,12 +52,10 @@ app.get("/:port/make-appointment", (req, res)=> {
 })
 
 app.post("/:port/make-appointment", async (req, res)=> {
+    let port = req.params.port
     const hexId = initialId.toString(16).padStart(32, '0')
     const curDate = new Date()
 
-    const [numOfAppointmentId] = await pool.query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
-
-    const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
     const patientId = hexId
     const clinicId = hexId
     const doctorId = hexId
@@ -71,19 +69,60 @@ app.post("/:port/make-appointment", async (req, res)=> {
 
     initialId += 1
 
-    
-    try {
-        const result = await pool.query(`
-        INSERT INTO appointments (appt_id, patient_id, clinic_id, doctor_id, status, time_queued, queue_date, start_time, end_time, type, isVirtual)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `, [applicationId, patientId, clinicId, doctorId, status, timeQueued, queueDate, start_time, end_time, type, isVirtual])
+    if (port == '20186' & poolStatus == 'Success') {
+        try {
+            const [numOfAppointmentId] = await pool.promise().query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
+            const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
 
-        console.log(result)
-        res.status(200).send('Create Appointment Success');
-    } catch(e) {
-        console.error('Error Creating Appointment:', e);
-        res.status(500).send('Error Creating Appointment');
+            const result = await pool.promise().query(`
+            INSERT INTO appointments (appt_id, patient_id, clinic_id, doctor_id, status, time_queued, queue_date, start_time, end_time, type, isVirtual)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `, [applicationId, patientId, clinicId, doctorId, status, timeQueued, queueDate, start_time, end_time, type, isVirtual])
+
+            console.log(result)
+            res.status(200).send('Create Appointment Success');
+        } catch(e) {
+            console.error('Error Creating Appointment:', e);
+            res.status(500).send('Error Creating Appointment');
+        }
     }
+
+    else if (port == '20187' & poolStatus2 == 'Success') {
+        try {
+            const [numOfAppointmentId] = await pool2.promise().query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
+            const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
+
+            const result = await pool2.promise().query(`
+            INSERT INTO appointments (appt_id, patient_id, clinic_id, doctor_id, status, time_queued, queue_date, start_time, end_time, type, isVirtual)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `, [applicationId, patientId, clinicId, doctorId, status, timeQueued, queueDate, start_time, end_time, type, isVirtual])
+
+            console.log(result)
+            res.status(200).send('Create Appointment Success');
+        } catch(e) {
+            console.error('Error Creating Appointment:', e);
+            res.status(500).send('Error Creating Appointment');
+        }
+    }
+
+    else if (port == '20188' & poolStatus3 == 'Success') {
+        try {
+            const [numOfAppointmentId] = await pool3.promise().query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
+            const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
+
+            const result = await pool3.promise().query(`
+            INSERT INTO appointments (appt_id, patient_id, clinic_id, doctor_id, status, time_queued, queue_date, start_time, end_time, type, isVirtual)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `, [applicationId, patientId, clinicId, doctorId, status, timeQueued, queueDate, start_time, end_time, type, isVirtual])
+
+            console.log(result)
+            res.status(200).send('Create Appointment Success');
+        } catch(e) {
+            console.error('Error Creating Appointment:', e);
+            res.status(500).send('Error Creating Appointment');
+        }
+    }
+
 })
 
 app.get("/:port/update-appointment", (req, res)=> {
