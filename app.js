@@ -5,7 +5,7 @@ import path from "path";
 import {fileURLToPath} from 'url';
 import cors from "cors";
 import bodyParser from "body-parser";
-import { pool, pool2, pool3 } from "./db/conn.js";
+import { pool, pool2, pool3, poolStatus, poolStatus2, poolStatus3 } from "./db/conn.js";
 import { start } from "repl";
 
 // to allow __dirname to work in ES6
@@ -42,7 +42,13 @@ app.get("/main", (req, res)=> {
 })
 
 app.get("/:port/make-appointment", (req, res)=> {
-    res.render("createAppointment")
+    console.log(pool.status)
+
+    const dataToRender = {
+        port: req.params.port
+    }
+    
+    res.render("createAppointment", dataToRender)
 })
 
 app.post("/:port/make-appointment", async (req, res)=> {
@@ -65,6 +71,7 @@ app.post("/:port/make-appointment", async (req, res)=> {
 
     initialId += 1
 
+    
     try {
         const result = await pool.query(`
         INSERT INTO appointments (appt_id, patient_id, clinic_id, doctor_id, status, time_queued, queue_date, start_time, end_time, type, isVirtual)

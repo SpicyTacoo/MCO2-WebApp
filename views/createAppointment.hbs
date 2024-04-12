@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="/js/createAppointment.js" defer></script>
     <title>Make an Appointment</title>
 </head>
 <body>
@@ -14,7 +13,7 @@
         <div class="inner-container" id="create-inner-container">
             <div class="title">Make an Appointment</div>
 
-            <form action="/make-appointment" method="post" id="appointment-form" autocomplete="off">
+            <form action="/{{port}}/make-appointment" method="post" id="appointment-form" autocomplete="off">
                 <div class="user-details">
                     <div class="input">
                         <span class="headerreg">Appointment Type:</span>
@@ -38,5 +37,12 @@
             </form>
         </div>
     </div>
+
+    <script>
+        let port = "{{port}}"
+        let routeURL = "/" + port + "/make-appointment"
+        console.log(routeURL)
+    </script>
+    <script src="/js/createAppointment.js" defer></script>
 </body>
 </html>

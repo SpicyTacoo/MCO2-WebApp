@@ -3,6 +3,7 @@ const submitButton = document.getElementById('appointment-form')
 const appointmentType = document.getElementById('appointment-type').value;
 const virtual = document.getElementById('is-virtual');
 
+
 submitButton.addEventListener('submit', (event) => {
     event.preventDefault();
 
@@ -12,7 +13,7 @@ submitButton.addEventListener('submit', (event) => {
         };
 
         try {
-            fetch('/make-appointment', {
+            fetch(routeURL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
