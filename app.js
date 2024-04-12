@@ -81,7 +81,7 @@ app.post("/:port/make-appointment", async (req, res)=> {
 
     initialId += 1
 
-    if (port == '20186' & port1_status == 'success') {
+    if (port == '20186' && port1_status == 'success') {
         try {
             const [numOfAppointmentId] = await pool.promise().query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
             const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
@@ -99,7 +99,7 @@ app.post("/:port/make-appointment", async (req, res)=> {
         }
     }
 
-    else if (port == '20187' & port2_status == 'success') {
+    else if (port == '20187' && port2_status == 'success') {
         try {
             const [numOfAppointmentId] = await pool2.promise().query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
             const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
@@ -117,7 +117,7 @@ app.post("/:port/make-appointment", async (req, res)=> {
         }
     }
 
-    else if (port == '20188' & port3_status == 'success') {
+    else if (port == '20188' && port3_status == 'success') {
         try {
             const [numOfAppointmentId] = await pool3.promise().query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
             const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
