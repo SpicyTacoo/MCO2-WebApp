@@ -41,11 +41,11 @@ app.get("/main", (req, res)=> {
     res.render("index")
 })
 
-app.get("/make-appointment", (req, res)=> {
+app.get("/:port/make-appointment", (req, res)=> {
     res.render("createAppointment")
 })
 
-app.post("/make-appointment", async (req, res)=> {
+app.post("/:port/make-appointment", async (req, res)=> {
     const hexId = initialId.toString(16).padStart(32, '0')
     const curDate = new Date()
 
@@ -79,11 +79,11 @@ app.post("/make-appointment", async (req, res)=> {
     }
 })
 
-app.get("/update-appointment", (req, res)=> {
+app.get("/:port/update-appointment", (req, res)=> {
     res.render("updateAppointment")
 })
 
-app.patch("/update-appointment/:id", async (req, res)=> {
+app.patch("/:port/update-appointment/:id", async (req, res)=> {
     const id = req.params.id
     const appointmentID = parseInt(id, 16).toString(16).padStart(32, '0')
 
@@ -115,7 +115,7 @@ app.patch("/update-appointment/:id", async (req, res)=> {
     }
 })
 
-app.get("/update-appointment/:id", async (req, res)=> {
+app.get("/:port/update-appointment/:id", async (req, res)=> {
     const id = req.params.id
     const appointmentID = parseInt(id, 16).toString(16).padStart(32, '0')
     console.log(appointmentID)
@@ -145,12 +145,12 @@ app.get("/update-appointment/:id", async (req, res)=> {
     }
 })
 
-app.get("/check-appointment", (req, res)=> {
+app.get("/:port/check-appointment", (req, res)=> {
     res.render("checkAppointment")
 })
 
 
-app.get("/check", async (req, res)=>{
+app.get("/:port/check", async (req, res)=>{
     const searchTerm = req.query.search;
 
     try{
@@ -162,10 +162,10 @@ app.get("/check", async (req, res)=>{
     }
 });
 
-app.get("/cancel-appointment", (req, res)=> {
+app.get("/:port/cancel-appointment", (req, res)=> {
     res.render("cancelAppointment")
 })
-app.get("/search", async (req, res)=>{
+app.get("/:port/search", async (req, res)=>{
     const searchTerm = req.query.search;
 
     try{
@@ -176,7 +176,7 @@ app.get("/search", async (req, res)=>{
         res.status(500).send('Error searching appointments');
     }
 });
-app.post("/delete", async (req, res)=>{
+app.post("/:port/delete", async (req, res)=>{
     var apptID = req.body.appointmentId;
     console.log("Delete Appointment ID: ", apptID);
     try {
