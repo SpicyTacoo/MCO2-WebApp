@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 dotenv.config()
 
 let poolStatus
+let poolStatus2
+let poolStatus3
 
 export const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
@@ -10,7 +12,7 @@ export const pool = mysql.createPool({
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
     port: process.env.MYSQL_PORT
-}).promise()
+})
 
 export const pool2 = mysql.createPool({
     host: process.env.MYSQL_HOST,
@@ -18,7 +20,7 @@ export const pool2 = mysql.createPool({
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
     port: process.env.MYSQL_PORT2
-}).promise()
+})
 
 export const pool3 = mysql.createPool({
     host: process.env.MYSQL_HOST,
@@ -26,7 +28,7 @@ export const pool3 = mysql.createPool({
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
     port: process.env.MYSQL_PORT3
-}).promise()
+})
 
 
 pool.on('connection', function(connection) {
@@ -66,7 +68,7 @@ pool3.on('connection', function(connection) {
 })
 
 
-const poolPromise = new Promise( async (resolve, reject) => { 
+new Promise( async (resolve, reject) => { 
     await pool.getConnection((err, con) => {
         try {
             if(con) {
@@ -86,7 +88,7 @@ const poolPromise = new Promise( async (resolve, reject) => {
     poolStatus = result.status;
 })
 
-const poolPromise2 = new Promise( async (resolve, reject) => { 
+new Promise( async (resolve, reject) => { 
     await pool2.getConnection((err, con) => {
         try {
             if(con) {
@@ -105,7 +107,8 @@ const poolPromise2 = new Promise( async (resolve, reject) => {
 }).then((result) => {
     poolStatus2 = result.status;
 })
-const poolPromise3 = new Promise( async (resolve, reject) => { 
+
+new Promise( async (resolve, reject) => { 
     await pool3.getConnection((err, con) => {
         try {
             if(con) {
@@ -126,6 +129,11 @@ const poolPromise3 = new Promise( async (resolve, reject) => {
 
 })
 
+console.log(poolStatus)
+console.log(poolStatus2)
+console.log(poolStatus3)
+export {poolStatus, poolStatus2, poolStatus3}
+
 function signalHandler() {
     console.log("Closing MySQL Connection...")
     pool.end(function (err) {
@@ -143,7 +151,7 @@ process.on("SIGQUIT", signalHandler)
 // testing query after connecting
 
 // async function getAppointments() {
-//     const [rows] = await pool.query("SELECT * FROM appointments")
+//     const [rows] = await pool.promise().query("SELECT * FROM appointments LIMIT 5")
 //     return rows
 // }
 
