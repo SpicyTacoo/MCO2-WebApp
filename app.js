@@ -44,6 +44,14 @@ app.get("/main", (req, res)=> {
 app.get("/:port/make-appointment", (req, res)=> {
     console.log(pool.promise().status)
 
+    let port1_status = poolStatus
+    let port2_status = poolStatus2
+    let port3_status = poolStatus3
+
+    console.log(port1_status)
+    console.log(port2_status)
+    console.log(port3_status)
+
     const dataToRender = {
         port: req.params.port
     }
@@ -53,6 +61,10 @@ app.get("/:port/make-appointment", (req, res)=> {
 
 app.post("/:port/make-appointment", async (req, res)=> {
     let port = req.params.port
+    let port1_status = poolStatus
+    let port2_status = poolStatus2
+    let port3_status = poolStatus3
+
     const hexId = initialId.toString(16).padStart(32, '0')
     const curDate = new Date()
 
@@ -69,7 +81,7 @@ app.post("/:port/make-appointment", async (req, res)=> {
 
     initialId += 1
 
-    if (port == '20186' & poolStatus == 'Success') {
+    if (port == '20186' & port1_status == 'success') {
         try {
             const [numOfAppointmentId] = await pool.promise().query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
             const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
@@ -87,7 +99,7 @@ app.post("/:port/make-appointment", async (req, res)=> {
         }
     }
 
-    else if (port == '20187' & poolStatus2 == 'Success') {
+    else if (port == '20187' & port2_status == 'success') {
         try {
             const [numOfAppointmentId] = await pool2.promise().query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
             const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
@@ -105,7 +117,7 @@ app.post("/:port/make-appointment", async (req, res)=> {
         }
     }
 
-    else if (port == '20188' & poolStatus3 == 'Success') {
+    else if (port == '20188' & port3_status == 'success') {
         try {
             const [numOfAppointmentId] = await pool3.promise().query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
             const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
@@ -147,13 +159,13 @@ app.patch("/:port/update-appointment/:id", async (req, res)=> {
     const type = req.body.appointmentType
     const isVirtual = req.body.virtual
 
-    console.log(clinicId)
-    console.log(doctorId)
-    console.log(status)
-    console.log(start_time)
-    console.log(end_time)
-    console.log(type)
-    console.log(isVirtual)
+    // console.log(clinicId)
+    // console.log(doctorId)
+    // console.log(status)
+    // console.log(start_time)
+    // console.log(end_time)
+    // console.log(type)
+    // console.log(isVirtual)
 
     try {
         const result = await pool.promise().query(`UPDATE appointments SET clinic_id = ?, doctor_id = ?, status = ?, start_time = ?, end_time = ?, type = ?, isVirtual = ? WHERE appt_id LIKE ?
@@ -173,12 +185,10 @@ app.get("/:port/update-appointment/:id", async (req, res)=> {
     console.log(appointmentID)
 
     try {
-        const [appointmentData] = await pool.promise().query(`SELECT * FROM appointments WHERE appt_id LIKE ?`, [appointmentID])
+        const [appointmentData] = await pool.promise().query(`SELECT * FROM appointments WHERE appt_id = ?`, [appointmentID])
 
-        console.log(appointmentData[0].doctor_id)
-        
-        console.log(appointmentData[0].start_time)
-        console.log(appointmentData[0].end_time)
+        console.log(appointmentData[0])
+
         const dataToRender = {
             appt_id: appointmentData[0].appt_id,
             doctor_id: appointmentData[0].doctor_id,

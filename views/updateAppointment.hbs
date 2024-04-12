@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/search.css">
-    <script src="/js/updateAppointment.js" defer></script>
     <title>Update an Appointment</title>
 </head>
 <body>
@@ -14,7 +13,7 @@
     <div class="container" id="update-container">
 
         <div class="SearchDiv">
-            <form action="/check" method="GET" id="searchForm">
+            <form method="GET" id="searchForm">
                 <span class="headerreg">Search by Appointment ID:</span>
                 <input type="text" name="search" id ="searchInput" value="{{appt_id}}" placeholder="Search Appointment ID...">
                 <button type="submit" id="searchBtn">Search</button>
@@ -24,7 +23,7 @@
         <div class="inner-container" id="update-inner-container">
             <div class="title">Update Appointment</div>
 
-            <form action="/update-appointment/{{appt_id}}" method="post" id="appointment-form" autocomplete="off">
+            <form action="/{{port}}/update-appointment/{{appt_id}}" method="post" id="appointment-form" autocomplete="off">
                 <div class="user-details">
                     <div class="input">
                         <span class="headerreg">Doctor ID:</span>
@@ -81,11 +80,24 @@
     </div>
 
     <script>
-        let curStatus = "{{status}}"
-        let curType = "{{type}}"
-        let statusSelection = document.getElementById('status')
-        let typeSelection = document.getElementById('appointment-type')
-        let isChecked = {{isVirtual}}
+
+        let port = "{{port}}"
+        console.log(port)
+
+        console.log(("{{status}}" == ""))
+        console.log("WTF")
+
+        let curStatus 
+        let curType 
+        let statusSelection
+        let typeSelection
+        let isChecked
+
+        curStatus =  ("{{status}}" == "") ? " " : "{{status}}"
+        curType =  ("{{isVirtual}}" == "") ? " " : "{{type}}"
+        statusSelection = document.getElementById('status')
+        typeSelection = document.getElementById('appointment-type')
+        isChecked = ("{{isVirtual}}" == "") ? " " : "{{isVirtual}}"
 
         if(isChecked == true) {
             document.getElementById("is-virtual").checked = true;
@@ -108,10 +120,17 @@
             }
         }
 
-        //console.log("{{start_time}}")
-        //console.log("{{end_time}}")
-        //document.getElementById('start-time').value = "{{start_time}}"" 
-        //document.getElementById('end-time').value = "{{end_time}}"
+        const searchButton = document.getElementById('searchBtn')
+
+        searchButton.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            url = '/' + port + '/update-appointment/' + searchInput.value
+            console.log(url)
+            console.log(port)
+            window.location.href = url;
+        })
     </script>
+    <script src="/js/updateAppointment.js" defer></script>
 </body>
 </html>

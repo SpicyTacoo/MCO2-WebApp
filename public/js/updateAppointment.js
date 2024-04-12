@@ -1,16 +1,8 @@
 const submitButton = document.getElementById('appointment-form')
-const searchButton = document.getElementById('searchForm')
+
 const searchInput = document.getElementById('searchInput')
 
 let url
-let port = "{{port}}"
-searchButton.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    url = '/' + port + '/update-appointment/' + searchInput.value
-    console.log(url)
-    window.location.href = url;
-})
 
 submitButton.addEventListener('submit', (event) => {
     event.preventDefault();
