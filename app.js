@@ -42,7 +42,7 @@ app.get("/main", (req, res)=> {
 })
 
 app.get("/:port/make-appointment", (req, res)=> {
-    console.log(pool.status)
+    console.log(pool.promise().status)
 
     const dataToRender = {
         port: req.params.port
@@ -156,7 +156,7 @@ app.patch("/:port/update-appointment/:id", async (req, res)=> {
     console.log(isVirtual)
 
     try {
-        const result = await pool.query(`UPDATE appointments SET clinic_id = ?, doctor_id = ?, status = ?, start_time = ?, end_time = ?, type = ?, isVirtual = ? WHERE appt_id LIKE ?
+        const result = await pool.promise().query(`UPDATE appointments SET clinic_id = ?, doctor_id = ?, status = ?, start_time = ?, end_time = ?, type = ?, isVirtual = ? WHERE appt_id LIKE ?
                                         `, [clinicId, doctorId, status, start_time, end_time, type, isVirtual, appointmentID])
         
         console.log(result)
@@ -173,7 +173,7 @@ app.get("/:port/update-appointment/:id", async (req, res)=> {
     console.log(appointmentID)
 
     try {
-        const [appointmentData] = await pool.query(`SELECT * FROM appointments WHERE appt_id LIKE ?`, [appointmentID])
+        const [appointmentData] = await pool.promise().query(`SELECT * FROM appointments WHERE appt_id LIKE ?`, [appointmentID])
 
         console.log(appointmentData[0].doctor_id)
         
@@ -199,7 +199,7 @@ app.get("/:port/update-appointment/:id", async (req, res)=> {
 })
 
 app.get("/:port/check-appointment", (req, res)=> {
-    console.log(pool.status)
+    console.log(pool.promise().status)
 
     const dataToRender = {
         port: req.params.port
@@ -212,7 +212,7 @@ app.get("/:port/check", async (req, res)=>{
     const searchTerm = req.query.search;
 
     try{
-        const [rows] = await pool.query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`${searchTerm}`]);
+        const [rows] = await pool.promise().query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`${searchTerm}`]);
         res.json(rows);
     }catch(error){
         console.error('Error searching appointments:', error);
@@ -221,7 +221,7 @@ app.get("/:port/check", async (req, res)=>{
 });
 
 app.get("/:port/cancel-appointment", (req, res)=> {
-    console.log(pool.status)
+    console.log(pool.promise().status)
 
     const dataToRender = {
         port: req.params.port
@@ -232,7 +232,7 @@ app.get("/:port/search", async (req, res)=>{
     const searchTerm = req.query.search;
 
     try{
-        const [rows] = await pool.query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`${searchTerm}`]);
+        const [rows] = await pool.promise().query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`${searchTerm}`]);
         res.json(rows);
     }catch(error){
         console.error('Error searching appointments:', error);
@@ -244,7 +244,7 @@ app.post("/:port/delete", async (req, res)=>{
     console.log("Delete Appointment ID: ", apptID);
     try {
         // Perform deletion logic here (e.g., execute SQL DELETE statement)
-        await pool.query("DELETE FROM appointments WHERE appt_id = ?", [apptID]);
+        await pool.promise().query("DELETE FROM appointments WHERE appt_id = ?", [apptID]);
 
         res.sendStatus(200);
     } catch (error) {
