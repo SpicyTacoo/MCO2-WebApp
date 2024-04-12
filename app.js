@@ -187,7 +187,8 @@ app.get("/:port/update-appointment/:id", async (req, res)=> {
             start_time: appointmentData[0].start_time,
             end_time: appointmentData[0].end_time,
             type: appointmentData[0].type,
-            isVirtual: appointmentData[0].isVirtual
+            isVirtual: appointmentData[0].isVirtual,
+            port: req.params.port
         }
 
         res.render("updateAppointment", dataToRender)
