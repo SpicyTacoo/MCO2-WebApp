@@ -3,11 +3,12 @@ const searchButton = document.getElementById('searchForm')
 const searchInput = document.getElementById('searchInput')
 
 let url
-
+let port = "{{port}}"
 searchButton.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    url = /update-appointment/ + searchInput.value
+    url = '/' + port + '/update-appointment/' + searchInput.value
+    console.log(url)
     window.location.href = url;
 })
 
@@ -31,7 +32,7 @@ submitButton.addEventListener('submit', (event) => {
         end_time_value = null
     }
 
-    url = /update-appointment/ + searchInput.value
+    url = '/' + port + /update-appointment/ + searchInput.value
 
         const formData = {
             clinicId: clinicId,

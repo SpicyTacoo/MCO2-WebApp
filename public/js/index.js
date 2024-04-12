@@ -14,21 +14,21 @@ createAppointmentButton?.addEventListener("click" , function(e) {
 checkAppointmentButton?.addEventListener("click" , function(e) {
     console.log("Check An Appointment!")
     const portList = document.getElementById("port")
-    url = "/" + portList.value + "/make-appointment"
+    url = "/" + portList.value + "/check-appointment"
     location.href = url
 })
 
 updateAppointmentButton?.addEventListener("click" , function(e) {
     console.log("Update An Appointment!")
     const portList = document.getElementById("port")
-    url = "/" + portList.value + "/make-appointment"
+    url = "/" + portList.value + "/update-appointment"
     location.href = url
 })
 
 cancelAppointmentButton?.addEventListener("click" , function(e) {
     console.log("Delete An Appointment!")
     const portList = document.getElementById("port")
-    url = "/" + portList.value + "/make-appointment"
+    url = "/" + portList.value + "/cancel-appointment"
     location.href = url
 })
 

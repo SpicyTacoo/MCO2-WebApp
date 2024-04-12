@@ -6,9 +6,10 @@ $(document).ready(function(){
     $("#searchForm").submit(function(event){
         event.preventDefault();
         var searchTerm = $("#searchInput").val();
+        var port = '{{port}}';
         console.log("searchTerm", searchTerm);
         $.ajax({
-            url:"/check",
+            url:"/" + port + "/check",
             type: "get",
             data:{search: searchTerm},
             success: function(data){

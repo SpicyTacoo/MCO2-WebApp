@@ -6,8 +6,9 @@ $(document).ready(function(){
     $("#deleteButton").click(function(event){
         var appointmentId = $(".AppointmentID").attr("id");
         console.log("Delete Appointment ID? ", appointmentId);
+        var port = '{{port}}';
         $.ajax({
-            url: "/delete",
+            url: "/" + port + "/delete",
             type: "post",
             data: { appointmentId: appointmentId },
             success: function(response) {
@@ -26,9 +27,10 @@ $(document).ready(function(){
     $("#searchForm").submit(function(event){
         event.preventDefault();
         var searchTerm = $("#searchInput").val();
+        var port = '{{port}}';
         console.log("searchTerm", searchTerm);
         $.ajax({
-            url:"/search",
+            url:"/" + port + "/search",
             type: "get",
             data:{search: searchTerm},
             success: function(data){
