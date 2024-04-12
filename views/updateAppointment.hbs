@@ -79,5 +79,39 @@
             </form>
         </div>
     </div>
+
+    <script>
+        let curStatus = "{{status}}"
+        let curType = "{{type}}"
+        let statusSelection = document.getElementById('status')
+        let typeSelection = document.getElementById('appointment-type')
+        let isChecked = {{isVirtual}}
+
+        if(isChecked == true) {
+            document.getElementById("is-virtual").checked = true;
+        }
+        else {
+            document.getElementById("is-virtual").checked = false;
+        }
+
+        for(var i, j = 0; i = statusSelection.options[j]; j++) {
+            if(i.value == curStatus) {
+                statusSelection.selectedIndex = j;
+                break;
+            }   
+        }
+
+        for(var i, j = 0; i = typeSelection.options[j]; j++) {
+            if(i.value == curType) {
+                typeSelection.selectedIndex = j;
+                break;
+            }
+        }
+
+        //console.log("{{start_time}}")
+        //console.log("{{end_time}}")
+        //document.getElementById('start-time').value = "{{start_time}}"" 
+        //document.getElementById('end-time').value = "{{end_time}}"
+    </script>
 </body>
 </html>

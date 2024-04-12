@@ -125,7 +125,8 @@ app.get("/update-appointment/:id", async (req, res)=> {
 
         console.log(appointmentData[0].doctor_id)
         
-
+        console.log(appointmentData[0].start_time)
+        console.log(appointmentData[0].end_time)
         const dataToRender = {
             appt_id: appointmentData[0].appt_id,
             doctor_id: appointmentData[0].doctor_id,
