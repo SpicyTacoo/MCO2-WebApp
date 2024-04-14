@@ -98,8 +98,11 @@ app.post("/:port/make-appointment", async (req, res)=> {
             res.status(500).send('Error Creating Appointment');
         }
     }
-
-    else if (port == '20187' && port2_status == 'success') {
+    else if (port != '20186' && port1_status != 'success'){
+        port = '20187'
+        console.log("test")
+    }
+    if (port == '20187' && port2_status == 'success') {
         try {
             const [numOfAppointmentId] = await pool2.promise().query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
             const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
@@ -116,13 +119,35 @@ app.post("/:port/make-appointment", async (req, res)=> {
             res.status(500).send('Error Creating Appointment');
         }
     }
-
-    else if (port == '20188' && port3_status == 'success') {
+    else if (port != '20187' && port2_status != 'success'){
+        port = '20188'
+    }
+    if (port == '20188' && port3_status == 'success') {
         try {
             const [numOfAppointmentId] = await pool3.promise().query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
             const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
 
             const result = await pool3.promise().query(`
+            INSERT INTO appointments (appt_id, patient_id, clinic_id, doctor_id, status, time_queued, queue_date, start_time, end_time, type, isVirtual)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `, [applicationId, patientId, clinicId, doctorId, status, timeQueued, queueDate, start_time, end_time, type, isVirtual])
+
+            console.log(result)
+            res.status(200).send('Create Appointment Success');
+        } catch(e) {
+            console.error('Error Creating Appointment:', e);
+            res.status(500).send('Error Creating Appointment');
+        }
+    }else if (port == '20188' && port3_status != 'success'){
+        port = '20186'
+        console.log("test")
+    }
+    if (port == '20186' && port1_status == 'success') {
+        try {
+            const [numOfAppointmentId] = await pool.promise().query(`SELECT COUNT(*) AS 'COUNT' FROM appointments`)
+            const applicationId = numOfAppointmentId[0].COUNT.toString(16).padStart(32, '0')
+
+            const result = await pool2.promise().query(`
             INSERT INTO appointments (appt_id, patient_id, clinic_id, doctor_id, status, time_queued, queue_date, start_time, end_time, type, isVirtual)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `, [applicationId, patientId, clinicId, doctorId, status, timeQueued, queueDate, start_time, end_time, type, isVirtual])
@@ -174,7 +199,10 @@ app.patch("/:port/update-appointment/:id", async (req, res)=> {
             console.error('Error Updating Appointment:', e);
             res.status(500).send('Error Updating Appointment');
         }
-    }else if(port == '20187' && port2_status == 'success'){
+    }else if (port != '20186' && port1_status != 'success'){
+        port = '20187'
+    }
+    if(port == '20187' && port2_status == 'success'){
         try {
             const result = await pool2.promise().query(`UPDATE appointments SET clinic_id = ?, doctor_id = ?, status = ?, start_time = ?, end_time = ?, type = ?, isVirtual = ? WHERE appt_id LIKE ?
                                             `, [clinicId, doctorId, status, start_time, end_time, type, isVirtual, appointmentID])
@@ -184,9 +212,25 @@ app.patch("/:port/update-appointment/:id", async (req, res)=> {
             console.error('Error Updating Appointment:', e);
             res.status(500).send('Error Updating Appointment');
         }
-    }else if(port == '20188' && port3_status == 'success'){
+    }else if (port != '20187' && port2_status != 'success'){
+        port = '20188'
+    }
+    if(port == '20188' && port3_status == 'success'){
         try {
             const result = await pool3.promise().query(`UPDATE appointments SET clinic_id = ?, doctor_id = ?, status = ?, start_time = ?, end_time = ?, type = ?, isVirtual = ? WHERE appt_id LIKE ?
+                                            `, [clinicId, doctorId, status, start_time, end_time, type, isVirtual, appointmentID])
+            console.log(result)
+            res.status(200).send('Update Appointment Success');
+        } catch(e) {
+            console.error('Error Updating Appointment:', e);
+            res.status(500).send('Error Updating Appointment');
+        }
+    }else if (port == '20188' && port3_status != 'success'){
+        port = '20186'
+    }
+    if(port == '20186' && port1_status == 'success'){
+        try {
+            const result = await pool.promise().query(`UPDATE appointments SET clinic_id = ?, doctor_id = ?, status = ?, start_time = ?, end_time = ?, type = ?, isVirtual = ? WHERE appt_id LIKE ?
                                             `, [clinicId, doctorId, status, start_time, end_time, type, isVirtual, appointmentID])
             console.log(result)
             res.status(200).send('Update Appointment Success');
@@ -229,7 +273,10 @@ app.get("/:port/update-appointment/:id", async (req, res)=> {
             console.error('Error searching appointments:', e);
             res.status(500).send('Error searching appointments');
         }
-    } else if (port == '20187' && port2_status == 'success') {
+    }else if (port != '20186' && port1_status != 'success'){
+        port = '20187'
+    }
+    if (port == '20187' && port2_status == 'success') {
         try {
             const [appointmentData] = await pool2.promise().query(`SELECT * FROM appointments WHERE appt_id = ?`, [appointmentID])
 
@@ -252,9 +299,38 @@ app.get("/:port/update-appointment/:id", async (req, res)=> {
             console.error('Error searching appointments:', e);
             res.status(500).send('Error searching appointments');
         }
-    }else if (port == '20188' && port3_status == 'success') {
+    }else if (port != '20187' && port2_status != 'success'){
+        port = '20188'
+    }
+    if (port == '20188' && port3_status == 'success') {
         try {
             const [appointmentData] = await pool3.promise().query(`SELECT * FROM appointments WHERE appt_id = ?`, [appointmentID])
+
+            console.log(appointmentData[0])
+
+            const dataToRender = {
+                appt_id: appointmentData[0].appt_id,
+                doctor_id: appointmentData[0].doctor_id,
+                clinic_id: appointmentData[0].clinic_id,
+                status: appointmentData[0].status,
+                start_time: appointmentData[0].start_time,
+                end_time: appointmentData[0].end_time,
+                type: appointmentData[0].type,
+                isVirtual: appointmentData[0].isVirtual,
+                port: req.params.port
+            }
+
+            res.render("updateAppointment", dataToRender)
+        } catch(e) {
+            console.error('Error searching appointments:', e);
+            res.status(500).send('Error searching appointments');
+        }
+    }else if (port == '20188' && port3_status != 'success'){
+        port = '20186'
+    }
+    if (port == '20186' && port1_status == 'success') {
+        try {
+            const [appointmentData] = await pool.promise().query(`SELECT * FROM appointments WHERE appt_id = ?`, [appointmentID])
 
             console.log(appointmentData[0])
 
@@ -302,7 +378,11 @@ app.get("/:port/check", async (req, res)=>{
             console.error('Error searching appointments:', error);
             res.status(500).send('Error searching appointments');
         }
-    }else if(port == '20187' && port2_status == 'success'){
+    }
+    else if (port != '20186' && port1_status != 'success'){
+        port = '20187'
+    }
+    if(port == '20187' && port2_status == 'success'){
         try{
             const [rows] = await pool2.promise().query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`${searchTerm}`]);
             res.json(rows);
@@ -310,9 +390,24 @@ app.get("/:port/check", async (req, res)=>{
             console.error('Error searching appointments:', error);
             res.status(500).send('Error searching appointments');
         }
-    }else if(port = '20188' && port3_status == 'success'){
+    }
+    else if (port != '20187' && port2_status != 'success'){
+        port = '20188'
+    }
+    if(port == '20188' && port3_status == 'success'){
         try{
             const [rows] = await pool3.promise().query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`${searchTerm}`]);
+            res.json(rows);
+        }catch(error){
+            console.error('Error searching appointments:', error);
+            res.status(500).send('Error searching appointments');
+        }
+    }else if (port == '20188' && port3_status != 'success'){
+        port = '20186'
+    }
+    if(port == '20186' && port1_status == 'success'){
+        try{
+            const [rows] = await pool.promise().query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`${searchTerm}`]);
             res.json(rows);
         }catch(error){
             console.error('Error searching appointments:', error);
@@ -343,7 +438,11 @@ app.get("/:port/search", async (req, res)=>{
             console.error('Error searching appointments:', error);
             res.status(500).send('Error searching appointments');
         }
-    }else if(port = '20187' && port2_status == 'success'){
+    }
+    else if (port != '20186' && port1_status != 'success'){
+        port = '20187'
+    }
+    if(port = '20187' && port2_status == 'success'){
         try{
             const [rows] = await pool2.promise().query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`${searchTerm}`]);
             res.json(rows);
@@ -351,9 +450,25 @@ app.get("/:port/search", async (req, res)=>{
             console.error('Error searching appointments:', error);
             res.status(500).send('Error searching appointments');
         }
-    }else if(port = '20188' && port3_status == 'success'){
+    }
+    else if (port != '20187' && port2_status != 'success'){
+        port = '20188'
+    }
+    if(port = '20188' && port3_status == 'success'){
         try{
             const [rows] = await pool3.promise().query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`${searchTerm}`]);
+            res.json(rows);
+        }catch(error){
+            console.error('Error searching appointments:', error);
+            res.status(500).send('Error searching appointments');
+        }
+    }
+    else if (port == '20188' && port3_status != 'success'){
+        port = '20186'
+    }
+    if(port == '20186' && port1_status == 'success'){
+        try{
+            const [rows] = await pool.promise().query("SELECT * FROM appointments WHERE appt_id LIKE ?", [`${searchTerm}`]);
             res.json(rows);
         }catch(error){
             console.error('Error searching appointments:', error);
@@ -378,7 +493,11 @@ app.post("/:port/delete", async (req, res)=>{
             console.error("Error deleting appointment: ", error);
             res.status(500).send("Error deleting appointment");
         }
-    }else if(port = '20187' && port2_status == 'success'){
+    }
+    else if (port != '20186' && port1_status != 'success'){
+        port = '20187'
+    }
+    if(port = '20187' && port2_status == 'success'){
         try {
 
             await pool2.promise().query("DELETE FROM appointments WHERE appt_id = ?", [apptID]);
@@ -388,10 +507,28 @@ app.post("/:port/delete", async (req, res)=>{
             console.error("Error deleting appointment: ", error);
             res.status(500).send("Error deleting appointment");
         }
-    }else if(port = '20188' && port3_status == 'success'){
+    }
+    else if (port != '20187' && port2_status != 'success'){
+        port = '20188'
+    }
+    if(port = '20188' && port3_status == 'success'){
         try {
 
             await pool3.promise().query("DELETE FROM appointments WHERE appt_id = ?", [apptID]);
+
+            res.sendStatus(200);
+        } catch (error) {
+            console.error("Error deleting appointment: ", error);
+            res.status(500).send("Error deleting appointment");
+        }
+    }
+    else if (port == '20188' && port3_status != 'success'){
+        port = '20186'
+    }
+    if(port == '20186' && port1_status == 'success'){
+        try {
+
+            await pool.promise().query("DELETE FROM appointments WHERE appt_id = ?", [apptID]);
 
             res.sendStatus(200);
         } catch (error) {
